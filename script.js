@@ -260,6 +260,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isComplete) {
             isComplete = true;
             playCompleteSound();
+            // Zastavení časovače
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+            // Zobrazení leaderboardu
+            showLeaderboard();
         }
     }
     
