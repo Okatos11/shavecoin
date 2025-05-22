@@ -217,68 +217,41 @@ document.addEventListener('DOMContentLoaded', () => {
         scores.sort((a, b) => parseFloat(a.time) - parseFloat(b.time));
         localStorage.setItem('scores', JSON.stringify(scores));
         
-        // Nastavení stránkování
-        const scoresPerPage = 10;
-        let currentPage = 1;
-        
-        function displayScores(page) {
-            const startIndex = (page - 1) * scoresPerPage;
-            const endIndex = startIndex + scoresPerPage;
-            const pageScores = scores.slice(startIndex, endIndex);
-            
-            const leaderboardHTML = `
-                <div class="popup">
-                    <div class="popup-content">
-                        <h2>Leaderboard 🏆</h2>
-                        <div class="leaderboard">
-                            ${pageScores.map((score, index) => {
-                                const nickname = score.nickname || 'Anonymous';
-                                const rank = startIndex + index + 1;
-                                return `
-                                    <div class="leaderboard-item">
-                                        <span class="rank">#${rank}</span>
-                                        <span class="nickname">${nickname}</span>
-                                        <span class="time">${score.time}s</span>
-                                    </div>
-                                `;
-                            }).join('')}
-                        </div>
-                        <div class="pagination">
-                            <button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>←</button>
-                            <span>Page ${currentPage} of ${Math.ceil(scores.length / scoresPerPage)}</span>
-                            <button onclick="changePage(${currentPage + 1})" ${currentPage >= Math.ceil(scores.length / scoresPerPage) ? 'disabled' : ''}>→</button>
-                        </div>
-                        <div class="share-buttons">
-                            <button onclick="location.reload()" class="start-button">Play Again!</button>
-                            <a href="https://twitter.com/intent/tweet?text=Gainzy was hairy AF. Not anymore.%0AI trimmed him in ${score.time} seconds. Smoothest ape alive.%0A%0AYour turn 👉 https://www.shavecoin.fun/%0A%0ACA:%0A@Shavecoin" 
-                               target="_blank" 
-                               class="twitter-button">
-                                Share on Twitter 🐦
-                            </a>
-                        </div>
+        const leaderboardHTML = `
+            <div class="popup">
+                <div class="popup-content">
+                    <h2>Leaderboard 🏆</h2>
+                    <div class="leaderboard">
+                        ${scores.map((score, index) => {
+                            const nickname = score.nickname || 'Anonymous';
+                            return `
+                                <div class="leaderboard-item">
+                                    <span class="rank">#${index + 1}</span>
+                                    <span class="nickname">${nickname}</span>
+                                    <span class="time">${score.time}s</span>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                    <div class="share-buttons">
+                        <button onclick="location.reload()" class="start-button">Play Again!</button>
+                        <a href="https://twitter.com/intent/tweet?text=Gainzy was hairy AF. Not anymore.%0AI trimmed him in ${score.time} seconds. Smoothest ape alive.%0A%0AYour turn 👉 https://www.shavecoin.fun/%0A%0ACA:%0A@Shavecoin" 
+                           target="_blank" 
+                           class="twitter-button">
+                            Share on Twitter 🐦
+                        </a>
                     </div>
                 </div>
-            `;
-            
-            // Odstranění starého leaderboardu, pokud existuje
-            const oldLeaderboard = document.querySelector('.popup');
-            if (oldLeaderboard) {
-                oldLeaderboard.remove();
-            }
-            
-            document.body.insertAdjacentHTML('beforeend', leaderboardHTML);
+            </div>
+        `;
+        
+        // Odstranění starého leaderboardu, pokud existuje
+        const oldLeaderboard = document.querySelector('.popup');
+        if (oldLeaderboard) {
+            oldLeaderboard.remove();
         }
         
-        // Funkce pro změnu stránky
-        window.changePage = function(newPage) {
-            if (newPage >= 1 && newPage <= Math.ceil(scores.length / scoresPerPage)) {
-                currentPage = newPage;
-                displayScores(currentPage);
-            }
-        };
-        
-        // Zobrazení první stránky
-        displayScores(currentPage);
+        document.body.insertAdjacentHTML('beforeend', leaderboardHTML);
     }
     
     // Funkce pro uložení skóre
