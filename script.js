@@ -239,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     <div class="share-buttons">
                         <button onclick="location.reload()" class="start-button">Play Again!</button>
-                        <a href="https://twitter.com/intent/tweet?text=I shaved gainzy in ${score.time} seconds!%0A%0AShave him too: https://shavecoin.vercel.app/%0A%0ACA:%0A@shavecoin" 
+                        <a href="https://twitter.com/intent/tweet?text=Gainzy was hairy AF. Not anymore.%0AI trimmed him in ${score.time} seconds. Smoothest ape alive.%0A%0AYour turn 👉 https://www.shavecoin.fun/%0A%0ACA:%0A@Shavecoin" 
                            target="_blank" 
                            class="twitter-button">
                             Share on Twitter 🐦
