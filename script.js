@@ -167,12 +167,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Funkce pro nastavení nejlepšího hlasu
         function setVoice(speech) {
             const voices = window.speechSynthesis.getVoices();
-            // Preferujeme britský nebo americký hlas
+            // Preferujeme mužský hlas
             const preferredVoice = voices.find(voice => 
                 voice.name.includes('Daniel') || // Britský hlas
                 voice.name.includes('Alex') || // Americký hlas
                 voice.name.includes('Google UK English Male') || // Google UK hlas
-                voice.name.includes('Google US English')
+                voice.name.includes('Google US English Male') // Google US hlas
             );
             
             if (preferredVoice) {
