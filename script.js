@@ -199,9 +199,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         oscillator.start();
         oscillator.stop(audioContext.currentTime + 0.5);
-        
-        // Uložení výsledku
-        saveScore();
     }
     
     // Funkce pro zobrazení leaderboardu
