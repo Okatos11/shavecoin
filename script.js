@@ -150,10 +150,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function playCompleteSound() {
         // Vytvoření instance SpeechSynthesis
         const speech = new SpeechSynthesisUtterance();
-        speech.text = "Just shaved gainzy";
+        speech.text = "Just shaved Gainzy";
         speech.volume = 1;
-        speech.rate = 0.8; // Pomalejší tempo pro lepší srozumitelnost
-        speech.pitch = 0.9; // Mírně nižší tón pro lepší srozumitelnost
+        speech.rate = 0.9; // Mírně pomalejší tempo pro lepší srozumitelnost
+        speech.pitch = 1.0; // Standardní tón pro lepší srozumitelnost
         
         // Počkáme na načtení hlasů
         if (speechSynthesis.getVoices().length === 0) {
@@ -239,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     <div class="share-buttons">
                         <button onclick="location.reload()" class="start-button">Play Again!</button>
-                        <a href="https://twitter.com/intent/tweet?text=I shaved gainzy in ${score.time} seconds! Shave him too: YOUR_WEBSITE_URL" 
+                        <a href="https://twitter.com/intent/tweet?text=I shaved gainzy in ${score.time} seconds!%0A%0AShave him too: https://shavecoin.vercel.app/%0A%0ACA:%0A@shavecoin" 
                            target="_blank" 
                            class="twitter-button">
                             Share on Twitter 🐦
