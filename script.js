@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Funkce pro zobrazení leaderboardu
-    function showLeaderboard() {
+    async function showLeaderboard() {
         // Uložení aktuálního skóre
         const time = (Date.now() - startTime) / 1000;
         const score = {
@@ -211,45 +211,87 @@ document.addEventListener('DOMContentLoaded', () => {
             date: new Date().toISOString()
         };
         
-        // Získání existujících skóre
-        let scores = JSON.parse(localStorage.getItem('shavingScores') || '[]');
-        scores.push(score);
-        
-        // Seřazení podle času
-        scores.sort((a, b) => parseFloat(a.time) - parseFloat(b.time));
-        
-        // Uložení všech skóre (bez omezení na top 10)
-        localStorage.setItem('shavingScores', JSON.stringify(scores));
-        
-        const leaderboardHTML = `
-            <div class="popup">
-                <div class="popup-content">
-                    <h2>Leaderboard 🏆</h2>
-                    <div class="leaderboard">
-                        ${scores.map((score, index) => {
-                            const nickname = score.nickname || 'Anonymous';
-                            return `
-                                <div class="leaderboard-item">
-                                    <span class="rank">#${index + 1}</span>
-                                    <span class="nickname">${nickname}</span>
-                                    <span class="time">${score.time}s</span>
-                                </div>
-                            `;
-                        }).join('')}
+        try {
+            // Odeslání skóre na server
+            const response = await fetch('http://localhost:5000/scores', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(score)
+            });
+            
+            // Získání všech skóre
+            const scoresResponse = await fetch('http://localhost:5000/scores');
+            const scores = await scoresResponse.json();
+            
+            // Nastavení stránkování
+            const scoresPerPage = 10;
+            let currentPage = 1;
+            
+            function displayScores(page) {
+                const startIndex = (page - 1) * scoresPerPage;
+                const endIndex = startIndex + scoresPerPage;
+                const pageScores = scores.slice(startIndex, endIndex);
+                
+                const leaderboardHTML = `
+                    <div class="popup">
+                        <div class="popup-content">
+                            <h2>Leaderboard 🏆</h2>
+                            <div class="leaderboard">
+                                ${pageScores.map((score, index) => {
+                                    const nickname = score.nickname || 'Anonymous';
+                                    const rank = startIndex + index + 1;
+                                    return `
+                                        <div class="leaderboard-item">
+                                            <span class="rank">#${rank}</span>
+                                            <span class="nickname">${nickname}</span>
+                                            <span class="time">${score.time}s</span>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                            <div class="pagination">
+                                <button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>←</button>
+                                <span>Page ${currentPage} of ${Math.ceil(scores.length / scoresPerPage)}</span>
+                                <button onclick="changePage(${currentPage + 1})" ${currentPage >= Math.ceil(scores.length / scoresPerPage) ? 'disabled' : ''}>→</button>
+                            </div>
+                            <div class="share-buttons">
+                                <button onclick="location.reload()" class="start-button">Play Again!</button>
+                                <a href="https://twitter.com/intent/tweet?text=Gainzy was hairy AF. Not anymore.%0AI trimmed him in ${score.time} seconds. Smoothest ape alive.%0A%0AYour turn 👉 https://www.shavecoin.fun/%0A%0ACA:%0A@Shavecoin" 
+                                   target="_blank" 
+                                   class="twitter-button">
+                                    Share on Twitter 🐦
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="share-buttons">
-                        <button onclick="location.reload()" class="start-button">Play Again!</button>
-                        <a href="https://twitter.com/intent/tweet?text=Gainzy was hairy AF. Not anymore.%0AI trimmed him in ${score.time} seconds. Smoothest ape alive.%0A%0AYour turn 👉 https://www.shavecoin.fun/%0A%0ACA:%0A@Shavecoin" 
-                           target="_blank" 
-                           class="twitter-button">
-                            Share on Twitter 🐦
-                        </a>
-                    </div>
-                </div>
-            </div>
-        `;
-        
-        document.body.insertAdjacentHTML('beforeend', leaderboardHTML);
+                `;
+                
+                // Odstranění starého leaderboardu, pokud existuje
+                const oldLeaderboard = document.querySelector('.popup');
+                if (oldLeaderboard) {
+                    oldLeaderboard.remove();
+                }
+                
+                document.body.insertAdjacentHTML('beforeend', leaderboardHTML);
+            }
+            
+            // Funkce pro změnu stránky
+            window.changePage = function(newPage) {
+                if (newPage >= 1 && newPage <= Math.ceil(scores.length / scoresPerPage)) {
+                    currentPage = newPage;
+                    displayScores(currentPage);
+                }
+            };
+            
+            // Zobrazení první stránky
+            displayScores(currentPage);
+            
+        } catch (error) {
+            console.error('Error saving score:', error);
+            alert('Error saving score. Please try again.');
+        }
     }
     
     // Funkce pro uložení skóre
