@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shaving Simulator</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <div id="startPopup" class="popup">
+        <div class="popup-content">
+            <h2>Gainzys Shaving Room 🪒</h2>
+            <form id="startForm">
+                <input type="text" id="nickname" placeholder="Enter your nickname" required>
+                <button type="submit" class="start-button">Shave the Gainzy. Save the Ethereum.</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container" style="display: none;">
+        <h1>Gainzys Shaving Room 🪒</h1>
+        <div class="game-container">
+            <div class="image-container">
+                <img src="./hairyman.png" alt="Hairy Man" id="baseImage">
+                <canvas id="hairLayer"></canvas>
+            </div>
+            <div class="stats">
+                <div class="timer">Time: <span id="time">0.0s</span></div>
+                <div class="progress">
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                    Shaved: <span id="progress">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./script.js"></script>
+</body>
+</html> 
