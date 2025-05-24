@@ -235,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     <div class="share-buttons">
                         <button onclick="location.reload()" class="start-button">Play Again!</button>
-                        <a href="https://twitter.com/intent/tweet?text=Gainzy was hairy AF. Not anymore.%0AI trimmed him in ${score.time} seconds. Smoothest ape alive.%0A%0AYour turn 👉 https://www.shavecoin.fun/%0A%0ACA: rZKDJHzFyST9CEy9NJVuE1aZetBW9sxoQWbxreCpump%0A@Shavecoin" 
+                        <a href="https://twitter.com/intent/tweet?text=Gainzy was hairy AF. Not anymore.%0AI trimmed him in ${score.time} seconds. Smoothest ape alive.%0A%0AYour turn 👉 https://www.shavecoin.fun/%0A%0ACA: 0x916808e1732eab16ca0c22b50d85048d8e9a7868%0A@Shavecoin" 
                            target="_blank" 
                            class="twitter-button">
                             Share on Twitter 🐦
